@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <title>OSMC Symbols </title>
+<!--  <script src="../code/scripts.js" type="text/javascript"></script> -->
+ <meta  charset="UTF-8"/>
+
+ <link rel="stylesheet" type="text/css" href="website.css">
+<!--  <base target="_blank"> -->
+ 
+ <script type="text/javascript">
+  function getSymbol() {
+    var osmc =   (document.getElementById("waycolor").value);
+    osmc += ':'+ (document.getElementById("background").value);
+    osmc += ':'+ (document.getElementById("foreground").value);
+    osmc += ':'+ (document.getElementById("foreground2").value);
+    osmc += ':'+ (document.getElementById("text").value);
+    osmc += ':'+ (document.getElementById("textcolor").value);
+    var size = document.getElementById("imagesize").value;
+    document.getElementById("finaltag").innerHTML = osmc;
+    var rect = document.getElementById("rectangular").checked?'&opt=rect':'';
+    
+    
+    document.getElementById("image").innerHTML = '<img src="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">';
+    
+    document.getElementById("image").style.height = ''+(size*1.+20)+'px';
+    if(document.getElementById("rectangular").checked) {
+      size = size * 1.6;
+      }
+    document.getElementById("image").style.width = (size*1.+20)+'px';
+    document.getElementById("finalurl").innerHTML = '<a href="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg</a>';
+    
+    }
+ </script>
+ 
+</head>
+<body class="mappage">
+<h1>OSMC Symbols</h1>
+This page serves as a playground for osmc:symbol tags. There are currently several different descriptions available:
+<ul><li><a href="https://wiki.openstreetmap.org/wiki/Key:osmc:symbol">OSM Wiki - the "original" description</a>
+    <li><a href="https://hiking.waymarkedtrails.org/help/rendering/osmc">The subset of features (but extended set of icons) that is supported by waymarkedtrails.org</a>
+    <li>The extension supported on this page. A full description has yet to be written.
+</ul>
+
+<h2>Enter Tags</h2> 
+<div>
+<form accept-charset="UTF-8">
+<input type="text" size="10" onchange="getSymbol()" id="waycolor" placeholder="waycolor"/>:
+<input type="text" size="10" onchange="getSymbol()" id="background" placeholder="background"/>:
+<input type="text" size="10" onchange="getSymbol()" id="foreground" placeholder="1st foreground"/>:
+<input type="text" size="10" onchange="getSymbol()" id="foreground2" placeholder="2nd foreground"/>:
+<input type="text" size="10" onchange="getSymbol()" id="text" placeholder="text"/>:
+<input type="text" size="10" onchange="getSymbol()" id="textcolor" placeholder="textcolor"/>
+<input type="button" onclick="getSymbol()" value="Generate" style="margin-left:20px;">
+<h3>Options</h3>
+
+<dl><dt>Image width [px]:<dd><input type="text" size="10" onchange="" id="imagesize" title="image size" value="150"/>
+<dt>Rectangular shape:<dd><input type="checkbox" size="10" onchange="" checked id="rectangular"/></dl>
+
+
+</form>
+</div>
+<div style="border:1px solid black;background:#eee;padding:20px">
+<div id="image"></div>
+<p>Final tag: <span style="font-family:monospace">osmc:symbol = <span id="finaltag"></span></span>
+<p>Image link: <span id="finalurl"></span>
+</div>
+
+<div>
+<h2>Feature Description</h2>
+This implementation supports everything <a href="https://hiking.waymarkedtrails.org/osmc_symbols.html">waymarkedtrails.org</a> supports, with the following changes:
+<ul><li>A second foreground is allowed - there are no restrictions on the combination of foregrounds, but some don't make much sense (e.g. a bar under a cross)
+    <li>Some symbols got their logical counterpart (e.g. lower and right are supplemented with upper and left. Corner got its mirrored version corner_left)
+    <li>Several symbols support a second color name. E.g. <code>red_blue_fork</code> has the diagonal lines and the bar in different colors.
+    <li>Backgrounds <code>frame</code> and <code>circle</code> can have two colors - the first one is the outline, the second one the fill color.
+    <li>Unicode in text is supported, but results vary depending on locally installed fonts.
+</ul> 
+
+<h2>Bottom Lines</h2>
+<p>The full code is available at <a href="https://github.com/mueschel/OsmcToSVG">GitHub</a>. Suggestions or bug reports are very welcome.
+<br>All generated images are free to be used in any context ("Public Domain", "gemeinfrei").
+
+</div>
+</body>
