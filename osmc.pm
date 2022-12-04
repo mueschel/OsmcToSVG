@@ -19,7 +19,7 @@ my @bgshapes   = qw(circle round frame);
 my @fgshapes   = qw(corner cross bar pointer stripe dot triangle diamond_line lower slash backslash triangle_turned  
                     rectangle  diamond  rectangle_line right x hiker circle triangle_line turned_T fork hexagon 
                     hiker wheel shell shell_modern arch bowl crest drop drop_line diamond_right L);
-my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow upper_bowl house diamond_left);
+my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow upper_bowl house diamond_left bicycle);
 
 #Not yet supported:
 # diamond_corner horse tower
@@ -61,6 +61,15 @@ my $svg_shell_modern = <<HE;
 </g></svg>
 HE
 
+my $svg_bicycle = <<HE;
+<svg width="&width&px" height="&height&px" viewBox="0 0 15 15"><g>
+ <circle cx="215" cy="409" r="161" style="fill:none; stroke:black; stroke-width:40px" transform="matrix(0.020,0,0,0.020,-2.3,2)"/>
+ <circle cx="790" cy="406" r="161" style="fill:none; stroke:black; stroke-width:40px" transform="matrix(0.020,0,0,0.020,-2.3,2)"/>
+ <path style="fill:black; fill-rule:evenodd; stroke:none"
+       d="M 429.48437,15.467118 C 296.91790,16.759190 319.39993,1.7711686 248.07762,230.98455 C 189.97511,414.12586 196.30387,394.15363 196.00000,407.00000 C 195.78704,416.98022 203.84333,424.89312 213.96694,425.57043 C 235.02054,423.44166 226.16492,427.84741 299.15748,201.18078 C 565.86963,482.53640 465.80592,436.91194 609.34064,442.62576 C 797.98299,440.81686 813.31557,452.44550 815.55516,424.79518 C 815.29674,415.40613 810.90371,409.80716 681.43820,121.67535 L 693.84208,87.564675 L 736.48042,86.789433 L 734.92994,51.128275 L 576.00521,51.128275 C 561.96471,70.337063 581.69033,70.250925 652.75423,86.014190 L 640.35035,120.90010 L 323.27614,121.67535 C 344.63838,47.079788 332.57905,51.731243 428.70913,51.903518 L 429.48437,15.467118 z     M 314.11415,159.91012 L 624.37752,159.36001 L 534.70921,400.30922 L 314.11415,159.91012 z     M 661.78516,174.21304 L 573.76718,405.26023 L 766.30650,405.81034 L 661.78516,174.21304 z" 
+       transform="matrix(0.020,0,0,0.020,-2.3,2)" />
+</g></svg>
+HE
 
 
 sub OsmcSymbol  {
@@ -222,6 +231,9 @@ sub OsmcSymbol  {
     if($fgshape[$i] eq 'hiker') { 
       push (@out, finalize($svg_hiker,$fgcolor[$i],$height,$width));
       }
+    if($fgshape[$i] eq 'bicycle') { 
+      push (@out, finalize($svg_bicycle,$fgcolor[$i],$height,$width));
+      }
     if($fgshape[$i] eq 'wheel') { 
        push (@out, finalize($svg_wheel,$fgcolor[$i],$height,$width));
       }
@@ -328,7 +340,7 @@ sub isValidBackground {
       }
     }
   if (!$color) {
-    $color = '000';
+    $color = 'transparent';
     $error .= "Invalid color name $str[0]\n";
     }
   
