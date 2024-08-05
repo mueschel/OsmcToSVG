@@ -19,7 +19,7 @@ my @bgshapes   = qw(circle round frame);
 my @fgshapes   = qw(corner cross bar pointer stripe dot triangle diamond_line lower slash backslash triangle_turned  
                     rectangle  diamond  rectangle_line right x hiker circle triangle_line turned_T fork hexagon 
                     hiker wheel shell shell_modern arch bowl crest drop drop_line diamond_right L);
-my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow upper_bowl house diamond_left bicycle);
+my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow up_arrow down_arrow upper_bowl house diamond_left bicycle);
 
 #Not yet supported:
 # diamond_corner horse tower
@@ -197,15 +197,19 @@ sub OsmcSymbol  {
                         '" fill="none" stroke="'.$fgcolor[$i].'" stroke-width="'.($hu*3).'"/>');
       }        
     if($fgshape[$i] eq 'diamond') {
-     push (@out, '<path d="M '.($width/2).' '.($hu*4).' L '.($width/2).' '.($hu*16).' L '.($wu*1).' '.($height/2).' Z'.
+     push (@out, '<path d="M '.($width/2).' '.($hu*4).' L '.($width/2).' '.($hu*16).' L '.($wu*2).' '.($height/2).' Z'.
                         '" fill="'.$fgcolor[$i].'" stroke="none" />');
-     push (@out, '<path d="M '.($width/2).' '.($hu*4).' L '.($width/2).' '.($hu*16).' L '.($wu*19).' '.($height/2).' Z'.
+     push (@out, '<path d="M '.($width/2).' '.($hu*4).' L '.($width/2).' '.($hu*16).' L '.($wu*18).' '.($height/2).' Z'.
                         '" fill="'.$fg2color[$i].'" stroke="none" />');                        
       } 
     if($fgshape[$i] eq 'diamond_line') {
-      push (@out, '<rect transform="scale(0.8 0.5) rotate(45) " style="transform-origin:50%" x="'.($wu*5).'" y="'.($hu*5).'" width="'.($wu*10).'" height="'.($hu*10).
-                        '" fill="none" stroke="'.$fgcolor[$i].'" stroke-width="'.($hu*3).'"/>');
+     push (@out, '<path d="M '.($width/2).' '.($hu*4).' L '.($wu*18).' '.($height/2).' L '.($width/2).' '.($hu*16).' L '.($wu*2).' '.($height/2).' Z'.
+                        '" fill="none" stroke="'.$fgcolor[$i].'" stroke-width="'.($hu*2).'"/>');
       } 
+#     if($fgshape[$i] eq 'diamond_line') {
+#       push (@out, '<rect transform="scale(0.8 0.5) rotate(45) " style="transform-origin:50%" x="'.($wu*5).'" y="'.($hu*5).'" width="'.($wu*10).'" height="'.($hu*10).
+#                         '" fill="none" stroke="'.$fgcolor[$i].'" stroke-width="'.($hu*3).'"/>');
+#       } 
     if($fgshape[$i] eq 'turned_T') {
       push (@out, '<rect x="'.($wu*3).'" y="'.($hu*14).'" width="'.($wu*14).'" height="'.($hu*2).'" fill="'.$fgcolor[$i].'" stroke="none"/>');
       push (@out, '<rect x="'.($wu*9).'" y="'.($hu*4).'" width="'.($wu*2).'" height="'.($hu*12).'" fill="'.$fg2color[$i].'" stroke="none"/>');
@@ -227,6 +231,12 @@ sub OsmcSymbol  {
       }      
     if($fgshape[$i] eq 'left_arrow') {
       push (@out, '<path style="fill:'.$fgcolor[$i].';stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke:'.$fgcolor[$i].';stroke-opacity:1;stroke-miterlimit:10;" d="M 0.9 0.7 L 0.4 0.7 L 0.4 0.95 L 0 0.5 L 0.4 0.05 L 0.4 0.3 L 0.9 0.3 L 0.9 0.7" transform="matrix('.$minsize.',0,0,'.$minsize.','.(($width-$minsize)/2).','.(($height-$minsize)/2).')"/>');
+      }         
+    if($fgshape[$i] eq 'up_arrow') {
+      push (@out, '<path style="fill:'.$fgcolor[$i].';stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke:'.$fgcolor[$i].';stroke-opacity:1;stroke-miterlimit:10;" d="M 0.7 0.9 L 0.7 0.4 L 0.95 0.4 L 0.5 0 L 0.05 0.4 L 0.3 0.4 L 0.3 0.9 L 0.7 0.9" transform="matrix('.$minsize.',0,0,'.$minsize.','.(($width-$minsize)/2).','.(($height-$minsize)/2).')"/>');
+      }
+    if($fgshape[$i] eq 'down_arrow') {
+      push (@out, '<path style="fill:'.$fgcolor[$i].';stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke:'.$fgcolor[$i].';stroke-opacity:1;stroke-miterlimit:10;" d="M 0.7 0.1 L 0.7 0.6 L 0.95 0.6 L 0.5 1 L 0.05 0.6 L 0.3 0.6 L 0.3 0.1 L 0.7 0.1" transform="matrix('.$minsize.',0,0,'.$minsize.','.(($width-$minsize)/2).','.(($height-$minsize)/2).')"/>');
       }         
     if($fgshape[$i] eq 'hiker') { 
       push (@out, finalize($svg_hiker,$fgcolor[$i],$height,$width));
