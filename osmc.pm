@@ -19,7 +19,7 @@ my @bgshapes   = qw(circle round frame);
 my @fgshapes   = qw(corner cross bar pointer stripe dot triangle diamond_line lower slash backslash triangle_turned  
                     rectangle  diamond  rectangle_line right x hiker circle triangle_line turned_T fork hexagon 
                     hiker wheel shell shell_modern arch bowl crest drop drop_line diamond_right L);
-my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow up_arrow down_arrow upper_bowl house diamond_left bicycle);
+my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow up_arrow down_arrow upper_bowl house diamond_left bicycle left_pointer_line right_pointer_line );
 
 #Not yet supported:
 # diamond_corner horse tower
@@ -162,9 +162,15 @@ sub OsmcSymbol  {
     if($fgshape[$i] eq 'pointer' || $fgshape[$i] eq 'right_pointer') {
       push (@out, '<path  d="M '.($wu*3).' '.($hu*3).' L '.($wu*3).' '.($hu*17).' L '.($wu*17).' '.($hu*10).' Z" fill="'.$fgcolor[$i].'" stroke="none"/>');
       } 
+    if($fgshape[$i] eq 'pointer_line' || $fgshape[$i] eq 'right_pointer_line') {
+      push (@out, '<path  d="M '.($wu*3).' '.($hu*3).' L '.($wu*3).' '.($hu*17).' L '.($wu*17).' '.($hu*10).' Z"  stroke-width="'.($hu*2).'" stroke="'.$fgcolor[$i].'" fill="none"/>');
+      }
     if($fgshape[$i] eq 'left_pointer') {
       push (@out, '<path  d="M '.($wu*17).' '.($hu*3).' L '.($wu*17).' '.($hu*17).' L '.($wu*3).' '.($hu*10).' Z" fill="'.$fgcolor[$i].'" stroke="none"/>');
       } 
+    if($fgshape[$i] eq 'left_pointer_line') {
+      push (@out, '<path  d="M '.($wu*17).' '.($hu*3).' L '.($wu*17).' '.($hu*17).' L '.($wu*3).' '.($hu*10).' Z"  stroke-width="'.($hu*2).'" stroke="'.$fgcolor[$i].'" fill="none"/>');
+      }
     if($fgshape[$i] eq 'triangle') {
       push (@out, '<path  d="M '.($wu*3).' '.($hu*17).' L '.($wu*17).' '.($hu*17).' L '.($wu*10).' '.($hu*3).' Z" '.
                         'fill="'.$fgcolor[$i].'" stroke="none"/>');
