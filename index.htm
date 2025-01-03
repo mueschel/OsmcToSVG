@@ -7,8 +7,11 @@
 
  <link rel="stylesheet" type="text/css" href="website.css">
 <!--  <base target="_blank"> -->
- 
+
  <script type="text/javascript">
+
+  const colorList = ["grey","gray","red","yellow","orange","white","purple","black","green","blue","brown","pink"];
+
   function getSymbol() {
     var osmc =   (document.getElementById("waycolor").value);
     osmc += ':'+ (document.getElementById("background").value);
@@ -19,20 +22,21 @@
     var size = document.getElementById("imagesize").value;
     document.getElementById("finaltag").innerHTML = osmc;
     var rect = document.getElementById("rectangular").checked?'&opt=rect':'';
-    
-    
+
+
     document.getElementById("image").innerHTML = '<img src="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">';
-    
+
     document.getElementById("image").style.height = ''+(size*1.+20)+'px';
     if(document.getElementById("rectangular").checked) {
       size = size * 1.6;
       }
     document.getElementById("image").style.width = (size*1.+20)+'px';
     document.getElementById("finalurl").innerHTML = '<a href="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg</a>';
-    
+
     }
+
  </script>
- 
+
 </head>
 <body class="mappage">
 <h1>OSMC Symbols</h1>
@@ -42,31 +46,69 @@ This page serves as a playground for osmc:symbol tags. There are currently sever
     <li>The extension supported on this page. A full description has yet to be written.
 </ul>
 
-<h2>Enter Tags</h2> 
-<div>
+<h2>Enter Tags</h2>
 <form accept-charset="UTF-8">
-<input type="text" size="10" onchange="getSymbol()" id="waycolor" placeholder="waycolor"/>:
-<input type="text" size="10" onchange="getSymbol()" id="background" placeholder="background"/>:
-<input type="text" size="10" onchange="getSymbol()" id="foreground" placeholder="1st foreground"/>:
-<input type="text" size="10" onchange="getSymbol()" id="foreground2" placeholder="2nd foreground"/>:
-<input type="text" size="10" onchange="getSymbol()" id="text" placeholder="text"/>:
-<input type="text" size="10" onchange="getSymbol()" id="textcolor" placeholder="textcolor"/>
-<input type="button" onclick="getSymbol()" value="Generate" style="margin-left:20px;">
-<h3>Options</h3>
+<table><tr style="text-align:center">
+<td>way color<td>background<td>foreground<td>2nd foreground<td>text<td>text color
+<tr ><td><input type="text" size="10" onchange="getSymbol()" id="waycolor"/>
+<td><input type="text" size="10" onchange="getSymbol()" id="background"/>
+<td><input type="text" size="10" onchange="getSymbol()" id="foreground"/>
+<td><input type="text" size="10" onchange="getSymbol()" id="foreground2"/>
+<td><input type="text" size="10" onchange="getSymbol()" id="text"/>
+<td><input type="text" size="10" onchange="getSymbol()" id="textcolor"/>
+<td><input type="button" onclick="getSymbol()" value="Generate" style="margin-left:20px;">
+<tr>
+<td><ul id="dd_waycolor" class="dropdown colorbox" style="overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+</ul>
+<td><div><ul id="dd_background_color" class="dropdown colorbox" style="width:17px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+  </ul></div>
+<div><ul id="dd_background_color2" class="dropdown colorbox" style="width:17px;left:20px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+  </ul></div>
+<div><ul id="dd_background" class="dropdown" style="width:85px;left:40px">
+  <li>none</li>
+  <li>circle</li>
+  <li>round</li>
+  <li>frame</li>
+</ul></div>
+<td><div><ul id="dd_foreground_color" class="dropdown colorbox" style="width:17px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+  </ul></div>
+<div><ul id="dd_foreground_color2" class="dropdown colorbox" style="width:17px;left:20px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+</ul></div>
+<div><ul id="dd_foreground" class="dropdown" style="width:85px;left:40px">
+        <li>none<li>arch <li>arrow <li>down_arrow <li>left_arrow <li>right_arrow <li>up_arrow <li>backslash <li>bar <li>bicycle <li>bowl <li>upper_bowl <li>circle <li>corner <li>corner_left <li>crest <li>cross <li>diamond <li>diamond_left <li>diamond_line <li>diamond_right <li>dot <li>drop <li>drop_line <li>fork <li>hexagon <li>hiker <li>house <li>L <li>left <li>lower <li>pointer <li>left_pointer <li>right_pointer <li>pointer_line <li>left_pointer_line <li>right_pointer_line <li>rectangle <li>rectangle_line <li>right <li>shell <li>shell_modern <li>slash <li>stripe <li>triangle <li>triangle_line <li>triangle_turned <li>turned_T <li>upper <li>wheel <li>x
+</ul></div>
+<td><div><ul id="dd_foreground2_color" class="dropdown colorbox" style="width:17px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+  </ul></div>
+<div><ul id="dd_foreground2_color2" class="dropdown colorbox" style="width:17px;left:20px;overflow:hidden;">
+        <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+</ul></div>
+<div><ul id="dd_foreground2" class="dropdown" style="width:85px;left:40px">
+        <li>none<li>arch <li>arrow <li>down_arrow <li>left_arrow <li>right_arrow <li>up_arrow <li>backslash <li>bar <li>bicycle <li>bowl <li>upper_bowl <li>circle <li>corner <li>corner_left <li>crest <li>cross <li>diamond <li>diamond_left <li>diamond_line <li>diamond_right <li>dot <li>drop <li>drop_line <li>fork <li>hexagon <li>hiker <li>house <li>L <li>left <li>lower <li>pointer <li>left_pointer <li>right_pointer <li>pointer_line <li>left_pointer_line <li>right_pointer_line <li>rectangle <li>rectangle_line <li>right <li>shell <li>shell_modern <li>slash <li>stripe <li>triangle <li>triangle_line <li>triangle_turned <li>turned_T <li>upper <li>wheel <li>x
+</ul></div>
+<td>
+<td><div><ul id="dd_textcolor" class="dropdown colorbox" style="overflow:hidden;">
+  <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
+</table>
 
+<h2>Options</h2>
 <dl><dt>Image width [px]:<dd><input type="text" size="10" onchange="" id="imagesize" title="image size" value="150"/>
 <dt>Rectangular shape:<dd><input type="checkbox" size="10" onchange="" checked id="rectangular"/></dl>
-
-
 </form>
 </div>
+
+<h2>Output</h2>
 <div style="border:1px solid black;background:#eee;padding:20px">
 <div id="image"></div>
 <p>Final tag: <span style="font-family:monospace">osmc:symbol = <span id="finaltag"></span></span>
 <p>Image link: <span id="finalurl"></span>
 </div>
 
-<div>
 <h2>Feature Description</h2>
 This implementation supports everything <a href="https://hiking.waymarkedtrails.org/osmc_symbols.html">waymarkedtrails.org</a> supports, with the following changes:
 <ul><li>A second foreground is allowed - there are no restrictions on the combination of foregrounds, but some don't make much sense (e.g. a bar under a cross)
@@ -74,11 +116,65 @@ This implementation supports everything <a href="https://hiking.waymarkedtrails.
     <li>Several symbols support a second color name. E.g. <code>red_blue_fork</code> has the diagonal lines and the bar in different colors.
     <li>Backgrounds <code>frame</code> and <code>circle</code> can have two colors - the first one is the outline, the second one the fill color.
     <li>Unicode in text is supported, but results vary depending on locally installed fonts.
-</ul> 
+</ul>
 
 <h2>Bottom Lines</h2>
 <p>The full code is available at <a href="https://github.com/mueschel/OsmcToSVG">GitHub</a>. Suggestions or bug reports are very welcome.
 <br>All generated images are free to be used in any context ("Public Domain", "gemeinfrei").
 
-</div>
+
+
+<script type="text/javascript">
+
+  function replaceValue(where,string,position) {
+    //position 0: all, 1: first color, 2: second color, 3: remainder
+    if (position == 0) {
+      document.getElementById(where).value = string;
+    }
+    else {
+     oldValue = document.getElementById(where).value.split("_");
+     firstColor  = undefined;
+     secondColor = undefined;
+     remainder   = undefined;
+     if (colorList.includes(oldValue[0])) {firstColor  = oldValue.shift();}
+     if (colorList.includes(oldValue[0])) {secondColor = oldValue.shift();}
+     remainder = oldValue.join("_");
+
+     if(position == 1) firstColor = string;
+     if(position == 2) secondColor = string;
+     if(position == 3) remainder = string;
+
+     newValue  = firstColor?(firstColor+"_"):"";
+     newValue += secondColor?(secondColor+"_"):"";
+     newValue += remainder?remainder:"";
+     newValue  = newValue.replace(/_$/,'');
+     document.getElementById(where).value = newValue;
+    }
+  getSymbol();
+  }
+
+  dropdowns = document.querySelectorAll("ul.dropdown li");
+  dropdowns.forEach(function(dd) {
+    dd.addEventListener("click", function(){
+      entry = this.innerText;
+      parentid = this.parentElement.getAttribute("id");
+      entry = entry.trim();
+      if(entry == "none") {entry = "";}
+      if(parentid == "dd_waycolor")           {replaceValue("waycolor",entry,0);}
+      if(parentid == "dd_background_color")   {replaceValue("background",entry,1);}
+      if(parentid == "dd_background_color2")  {replaceValue("background",entry,2);}
+      if(parentid == "dd_background")         {replaceValue("background",entry,3);}
+      if(parentid == "dd_foreground_color")   {replaceValue("foreground",entry,1);}
+      if(parentid == "dd_foreground_color2")  {replaceValue("foreground",entry,2);}
+      if(parentid == "dd_foreground")         {replaceValue("foreground",entry,3);}
+      if(parentid == "dd_foreground2_color")  {replaceValue("foreground2",entry,1);}
+      if(parentid == "dd_foreground2_color2") {replaceValue("foreground2",entry,2);}
+      if(parentid == "dd_foreground2")        {replaceValue("foreground2",entry,3);}
+      if(parentid == "dd_textcolor")          {replaceValue("textcolor",entry,0);}
+    });
+  });
+</script>
+
 </body>
+
+
