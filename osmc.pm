@@ -17,9 +17,9 @@ my @colors     = qw(aaa  aaa  f00 ff0    f80    fff   a0a    000   080   00b  86
 my @bgshapes   = qw(circle round frame);
 
 my @fgshapes   = qw(corner cross bar pointer stripe dot triangle diamond_line lower slash backslash triangle_turned  
-                    rectangle  diamond  rectangle_line right x hiker circle triangle_line turned_T fork hexagon 
+                    rectangle  diamond  rectangle_line right x circle triangle_line turned_T fork hexagon
                     hiker wheel shell shell_modern arch bowl crest drop drop_line diamond_right L);
-my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow up_arrow down_arrow upper_bowl house diamond_left bicycle left_pointer_line right_pointer_line );
+my @fgaddshapes = qw(left upper corner_left left_pointer right_pointer arrow right_arrow left_arrow up_arrow down_arrow upper_bowl house diamond_left bicycle left_pointer_line right_pointer_line pointer_line);
 
 #Not yet supported:
 # diamond_corner horse tower
