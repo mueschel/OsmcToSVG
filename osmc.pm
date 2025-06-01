@@ -14,7 +14,7 @@ my $svg = '<?xml version="1.0" encoding="UTF-8"?>'."\n".
 my @colornames = qw(grey gray red yellow orange white purple black green blue brown pink);
 my @colors     = qw(aaa  aaa  f00 ff0    f80    fff   a0a    000   080   00b  862   f88);  
 
-my @bgshapes   = qw(circle round frame);
+my @bgshapes   = qw(circle round frame bar stripe diamond diamond_line);
 
 my @fgshapes   = qw(corner cross bar pointer stripe dot triangle diamond_line lower slash backslash triangle_turned  
                     rectangle  diamond  rectangle_line right x circle triangle_line turned_T fork hexagon
@@ -77,20 +77,13 @@ sub OsmcSymbol  {
   
   my $error = "";
   my @out;
-  my $height = $size;
-  my $width = $size;
-     $width *= 1.6 if $opt =~ /rect/;
+  my $isrect = 1 if $opt =~ /rect/;
 
-  my $hu = $height/20;
-  my $wu = $width/20;
-  my $minsize = min($height,$width);
      
   my @osmc = split(':',$str);
   
 
-  $svg =~ s/%HEIGHT%/$height/g;
-  $svg =~ s/%WIDTH%/$width/g;
-  push (@out,$svg);
+
   
   my (@fgshape,@fgcolor,@fg2color,@errfg);
   my ($waycolor) = isValidColor($osmc[0]);
@@ -103,10 +96,38 @@ sub OsmcSymbol  {
 
   $errfg[1] = '' unless $fgshape[1];
 
+#Calculate height and width. stripe and bar backgrounds overrule rectangular shape
+  my $height = $size;
+  my $width = $size;
+
+  if ($bgshape eq 'stripe') {
+    $width /= 2;
+    }
+  elsif ($bgshape eq 'bar') {
+    $height /= 2;
+    }
+  elsif ($bgshape eq 'diamond' || $bgshape eq 'diamond_line') {
+    $width *= 1.6;
+    }
+  elsif ($isrect) {
+    $width *= 1.6;
+    }
+
+  my $hu = $height/20;
+  my $wu = $width/20;
+  my $minsize = min($height,$width);
+
+
+#Adjust height and width of image
+  $svg =~ s/%HEIGHT%/$height/g;
+  $svg =~ s/%WIDTH%/$width/g;
+  push (@out,$svg);
+
+
   my $text        = substr($osmc[1],0,4) || '';
   my ($textcolor) = isValidColor($osmc[2]);    
   
-  if($bgshape eq '') {
+  if($bgshape eq '' || $bgshape eq 'stripe' || $bgshape eq 'bar') {
     push (@out, '<rect x="0" y="0" width="'.$width.'" height="'.$height.'" style="fill:'.$bgcolor.';fill-opacity:1;stroke:none;"/>');
     push (@out, ' <clipPath id="outside"> <rect  x="0" y="0" width="'.$width.'" height="'.$height.'"  /></clipPath>');
     }
@@ -122,7 +143,17 @@ sub OsmcSymbol  {
     push (@out, '<rect x="'.($hu).'" y="'.($hu).'" width="'.($width-$hu*2).'" height="'.($height-$hu*2).'" fill="'.$bg2color.'" stroke="'.$bgcolor.'" stroke-width="'.($hu*2).'"/>');
     push (@out, ' <clipPath id="outside"> <rect x="'.($hu*2).'" y="'.($hu*2).'" width="'.($width-$hu*4).'" height="'.($height-$hu*4).'" /></clipPath>');
     }
-  
+  elsif($bgshape eq 'diamond') {
+    push (@out, '<path d="M '.($width/2).' '.($hu*1).' L '.($width-$wu*1).' '.($height/2).' L '.($width/2).' '.($height-$hu).' L '.($wu*1).' '.($height/2).' Z'.
+                        '" stroke="'.$bgcolor.'" stroke-width="'.($hu*2).'" fill="'.$bgcolor.'"/>');
+    push (@out, ' <clipPath id="outside"> <path d="M '.($width/2).' '.($hu*0).' L '.($width-$wu*0).' '.($height/2).' L '.($width/2).' '.($height-$hu*0).' L '.($wu*0).' '.($height/2).' Z'.'"/></clipPath>');
+    }
+  elsif($bgshape eq 'diamond_line') {
+    push (@out, '<path d="M '.($width/2).' '.($hu*1).' L '.($width-$wu*1).' '.($height/2).' L '.($width/2).' '.($height-$hu).' L '.($wu*1).' '.($height/2).' Z'.
+                        '" stroke="'.$bgcolor.'" stroke-width="'.($hu*2).'"  fill="'.$bg2color.'"/>');
+    push (@out, ' <clipPath id="outside"> <path d="M '.($width/2).' '.($hu*2).' L '.($width-$wu*2).' '.($height/2).' L '.($width/2).' '.($height-$hu*2).' L '.($wu*2).' '.($height/2).' Z'.'"/></clipPath>');
+    }
+
   push(@out, '<g clip-path="url(#outside)">');
   for my $i (0..1) {
     next if $fgshape[$i] eq '' && $fgcolor[$i] eq '';
@@ -345,37 +376,37 @@ sub isValidColor {
 
 #Dissect background, return shape and color  
 sub isValidBackground {
-  my @str = split('_',$_[0]);
-  
+
   my ($shape,$color,$color2,$error) = ('','','#fff','');
+
+  my $str = $_[0].'_';
+  $str =~ s/\s//g;
   for (my $i = 0; $i < scalar @colornames;$i++) {
-    if ($str[0] eq $colornames[$i]) { 
+    if ($str =~ /^$colornames[$i]_/) {
       $color = '#'.$colors[$i];
-      shift(@str);
+      $str =~ s/^$colornames[$i]_//;
+      last;
+      }
+    }
+  for (my $i = 0; $i < scalar @colornames;$i++) {
+    if ($str =~ /^$colornames[$i]_/) {
+      $color2 = '#'.$colors[$i];
+      $str =~ s/^$colornames[$i]_//;
       last;
       }
     }
   if (!$color) {
     $color = 'transparent';
-    $error .= "Invalid color name $str[0]\n";
+    $error .= "Invalid color name $str\n";
     }
-  
-  if(scalar @str) {
-    for (my $i = 0; $i < scalar @colornames;$i++) {
-      if ($str[0] eq $colornames[$i]) { 
-        $color2 = '#'.$colors[$i];
-        shift(@str);
-        last;
-        }
+
+  if($str ne "") {
+    chop($str);
+    if(grep($str,@bgshapes)) {
+      $shape = $str;
       }
-    }
-    
-  if(scalar @str) {
-    if(grep($str[0],@bgshapes)) {
-      $shape = $str[0];
-      }
-    elsif($str[0] && $str[0] ne '') {
-      $error .= "Invalid background shape name $str[0]\n";
+    else {
+      $error .= "Invalid background shape name $str\n";
       }
     }  
   return ($shape,$color,$color2,$error);

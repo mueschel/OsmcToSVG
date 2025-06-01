@@ -26,11 +26,11 @@
 
     document.getElementById("image").innerHTML = '<img src="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">';
 
-    document.getElementById("image").style.height = ''+(size*1.+20)+'px';
-    if(document.getElementById("rectangular").checked) {
-      size = size * 1.6;
-      }
-    document.getElementById("image").style.width = (size*1.+20)+'px';
+    // document.getElementById("image").style.height = ''+(size*1.+20)+'px';
+    // if(document.getElementById("rectangular").checked) {
+    //   size = size * 1.6;
+    //   }
+    // document.getElementById("image").style.width = (size*1.+20)+'px';
     document.getElementById("finalurl").innerHTML = '<a href="generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg">generate.pl?osmc='+encodeURI(osmc)+'&size='+size+rect+'&out=svg</a>';
 
     }
@@ -72,6 +72,10 @@ This page serves as a playground for osmc:symbol tags. There are currently sever
   <li>circle</li>
   <li>round</li>
   <li>frame</li>
+  <li>stripe</li>
+  <li>bar</li>
+  <li>diamond</li>
+  <li>diamond_line</li>
 </ul></div>
 <td><div><ul id="dd_foreground_color" class="dropdown colorbox" style="width:17px;overflow:hidden;">
         <li><span style="background:#fff;border:1px solid black"></span>none<li><span style="background:#aaa;">&nbsp;</span>grey<li><span style="background:#f00;">&nbsp;</span>red<li><span style="background:#ff0;">&nbsp;</span>yellow<li><span style="background:#f80;">&nbsp;</span>orange<li><span style="background:#fff;">&nbsp;</span>white<li><span style="background:#a0a;">&nbsp;</span>purple<li><span style="background:#000;">&nbsp;</span>black<li><span style="background:#080;">&nbsp;</span>green<li><span style="background:#00b;">&nbsp;</span>blue<li><span style="background:#862;">&nbsp;</span>brown<li><span style="background:#f88;">&nbsp;</span>pink</ul></div>
@@ -111,8 +115,7 @@ This page serves as a playground for osmc:symbol tags. There are currently sever
 
 <h2>Feature Description</h2>
 This implementation supports everything <a href="https://hiking.waymarkedtrails.org/osmc_symbols.html">waymarkedtrails.org</a> supports, with the following changes:
-<ul><li>A second foreground is allowed - there are no restrictions on the combination of foregrounds, but some don't make much sense (e.g. a bar under a cross)
-    <li>Some symbols got their logical counterpart (e.g. lower and right are supplemented with upper and left. Corner got its mirrored version corner_left)
+<ul>
     <li>Several symbols support a second color name. E.g. <code>red_blue_fork</code> has the diagonal lines and the bar in different colors.
     <li>Backgrounds <code>frame</code> and <code>circle</code> can have two colors - the first one is the outline, the second one the fill color.
     <li>Unicode in text is supported, but results vary depending on locally installed fonts.
